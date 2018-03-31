@@ -34,5 +34,7 @@ RUN mkdir -p /opt/bin \
   && wget https://storage.googleapis.com/git-repo-downloads/repo -O /opt/bin/repo -q \
   && chmod +x /opt/bin/repo
 
-# Create new user
+# Create user and switch to it
 RUN useradd -m -s /bin/bash user
+USER user
+WORKDIR /home/user
