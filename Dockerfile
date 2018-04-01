@@ -2,6 +2,10 @@ FROM ubuntu:xenial
 
 LABEL maintainer="devops@brainbeanapps.com"
 
+# Switch to root
+USER root
+
+# Copy assets
 WORKDIR /opt
 COPY . .
 
