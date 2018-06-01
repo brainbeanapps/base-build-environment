@@ -17,7 +17,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Base tools
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends apt-utils wget curl zip build-essential ca-certificates apt-transport-https git gnupg \
+  && apt-get install -y --no-install-recommends apt-utils wget curl zip build-essential ca-certificates apt-transport-https git gnupg openssh-client \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
