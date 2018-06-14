@@ -22,6 +22,9 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Set the locale
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 RUN apt-get update \
   && apt-get install -y --no-install-recommends locales \
   && apt-get install -y --no-install-recommends locales-all \
