@@ -5,10 +5,6 @@ LABEL maintainer="devops@brainbeanapps.com"
 # Switch to root
 USER root
 
-# Copy assets
-WORKDIR /opt
-COPY . .
-
 # Use bash instead of sh (see https://github.com/eromoe/docker/commit/7dccc72bb24c715f176e4980ab59fd7aeb149a5f)
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
