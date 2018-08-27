@@ -18,15 +18,18 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Set the locale
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
-ENV LC_ALL=en_US.UTF-8
 RUN apt-get update \
   && apt-get install -y --no-install-recommends locales \
   && apt-get install -y --no-install-recommends locales-all \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-RUN update-locale LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
+
+# Set the timezone
+RUN ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
 # Extra tools
 RUN mkdir -p /opt/bin
