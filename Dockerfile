@@ -5,31 +5,44 @@ LABEL maintainer="devops@brainbeanapps.com"
 # Switch to root
 USER root
 
-# Use bash instead of sh (see https://github.com/eromoe/docker/commit/7dccc72bb24c715f176e4980ab59fd7aeb149a5f)
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
-# There's no terminal attached
+# Set shell as non-interactive during build
+# NOTE: This is discouraged in general, yet we're using it only during image build
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Base tools
+# Use bash instead of bash
+RUN echo "dash dash/sh boolean false" | debconf-set-selections
+RUN dpkg-reconfigure dash 2>&1
+
+# Install base
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends apt-utils wget curl zip build-essential ca-certificates apt-transport-https git gnupg openssh-client \
+  && apt-get install -y --no-install-recommends \
+    apt-utils \
+    apt-transport-https \
+    ca-certificates \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    tzdata \
+    locales \
+    locales-all \
+    wget \
+    curl \
+    zip \
+    build-essential \
+    git \
+    gnupg \
+    openssh-client \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
 # Set the locale
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends locales \
-  && apt-get install -y --no-install-recommends locales-all \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
-
-# Set the timezone
-RUN ln -s /usr/share/zoneinfo/UTC /etc/localtime
 
 # Extra tools
 RUN mkdir -p /opt/bin
